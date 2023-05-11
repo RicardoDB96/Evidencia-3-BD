@@ -1,4 +1,4 @@
-package evidencia.pkg3.bd.CustomLists.Alumnos;
+package evidencia.pkg3.bd.CustomLists.Carreras;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -16,13 +16,13 @@ import javax.swing.ListCellRenderer;
  * @author Ricardo
  * @param <E>
  */
-public class AlumnosList<E extends Object> extends JList<E> {
+public class CarrerasList <E extends Object> extends JList<E> {
 
     private final DefaultListModel model;
     private final Color selectedColor;
     private int hoverIndex = -1;
 
-    public AlumnosList() {
+    public CarrerasList() {
         model = new DefaultListModel();
         selectedColor = new Color(204, 204, 204);
         setModel(model);
@@ -63,7 +63,7 @@ public class AlumnosList<E extends Object> extends JList<E> {
         return new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> jList, Object o, int index, boolean selected, boolean focus) {
-                AlumnosListItem item = new AlumnosListItem();
+                CarreraListItem item = new CarreraListItem();
                 item.setItem(o);
                 if (index == hoverIndex) {
                     item.setBackground(selectedColor);
@@ -73,7 +73,7 @@ public class AlumnosList<E extends Object> extends JList<E> {
         };
     }
 
-    public void addItem(Alumno item) {
+    public void addItem(Carrera item) {
         model.addElement(item);
     }
     

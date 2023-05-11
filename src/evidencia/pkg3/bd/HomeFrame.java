@@ -1,6 +1,9 @@
 package evidencia.pkg3.bd;
 
 import evidencia.pkg3.bd.CustomLists.Alumnos.Alumno;
+import evidencia.pkg3.bd.CustomLists.Carreras.Carrera;
+import evidencia.pkg3.bd.CustomLists.Departamentos.Departamento;
+import evidencia.pkg3.bd.CustomLists.Estatus.Estatus;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.event.ChangeEvent;
@@ -32,6 +35,9 @@ public class HomeFrame extends javax.swing.JFrame {
                     // Leemos todos los alumnos que esten en la BD
                     ArrayList<Document> alumnos = conn.getAllStudentData();
                     
+                    // Vaciamos la lista para no repetir elementos
+                    alumnosList.removeAllItem();
+                    
                     // Si tenemos alumnos los pintamos en pantalla
                     if (!alumnos.isEmpty()) {
                         for (Document alumno : alumnos) {
@@ -44,17 +50,33 @@ public class HomeFrame extends javax.swing.JFrame {
                     }
                 }
                 case 1 -> {// Carreras
+                    // Leemos todos los alumnos que esten en la BD
+                    ArrayList<Document> carerras = conn.getAllCareerData();
+                    
+                    // Vaciamos la lista para no repetir elementos
+                    careerList.removeAllItem();
+                    
+                    // Si tenemos alumnos los pintamos en pantalla
+                    if (!carerras.isEmpty()) {
+                        for (Document carrera : carerras) {
+                            String career = carrera.getString("carrera");
+                            String descripcion = carrera.getString("descripcion");
+                            String dept = conn.getDeptData(carrera.getObjectId("departamento"));
+                            careerList.addItem(new Carrera(career, descripcion, dept));
+                        }
+                    } else {// Si no, decimos que la lista esta vacia
+                    }
                 }
                 case 2 -> {// Departamentos
                     // Leemos todos los departamentos que esten en la BD
                     ArrayList<Document> depts = conn.getAllDeptData();
                     
+                    deptList.removeAllItem();
+                    
                     // Si tenemos departamentos los pintamos en pantalla
                     if (!depts.isEmpty()) {
                         for (Document dept : depts) {
-                            DefaultListModel<String> model = new DefaultListModel<>();
-                            deptList.setModel(model);
-                            model.addElement(dept.getString("departamento"));
+                            deptList.addItem(new Departamento(dept.getString("departamento")));
                         }
                     } else {// Si no, decimos que la lista esta vacia
                     }
@@ -63,13 +85,13 @@ public class HomeFrame extends javax.swing.JFrame {
                     // Leemos todos los departamentos que esten en la BD
                     ArrayList<Document> status = conn.getAllStatusData();
                     
+                    estatusList.removeAllItem();
+                    
                     // Si tenemos departamentos los pintamos en pantalla
                     if (!status.isEmpty()) {
-                        DefaultListModel<String> model = new DefaultListModel<>();
                         for (Document estatus : status) {
-                            model.addElement(estatus.getString("estatus"));
+                            estatusList.addItem(new Estatus(estatus.getString("estatus")));
                         }
-                        statusList.setModel(model);
                     } else {// Si no, decimos que la lista esta vacia
                     }
                 }
@@ -91,12 +113,14 @@ public class HomeFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         alumnosList = new evidencia.pkg3.bd.CustomLists.Alumnos.AlumnosList<>();
         carrerasPanel = new javax.swing.JPanel();
-        departamentosPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        deptList = new javax.swing.JList<>();
-        estatusPanel = new javax.swing.JPanel();
+        careerList = new evidencia.pkg3.bd.CustomLists.Carreras.CarrerasList<>();
+        departamentosPanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        statusList = new javax.swing.JList<>();
+        deptList = new evidencia.pkg3.bd.CustomLists.Departamentos.DepartamentosList<>();
+        estatusPanel = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        estatusList = new evidencia.pkg3.bd.CustomLists.Estatus.EstatusList<>();
         logoutBtn = new javax.swing.JButton();
         deleteDataBtn = new javax.swing.JButton();
         addDataBtn = new javax.swing.JButton();
@@ -117,35 +141,43 @@ public class HomeFrame extends javax.swing.JFrame {
             alumnosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(alumnosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                 .addContainerGap())
         );
         alumnosPanelLayout.setVerticalGroup(
             alumnosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(alumnosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         tabsPanel.addTab("Alumnos", alumnosPanel);
 
+        careerList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(careerList);
+
         javax.swing.GroupLayout carrerasPanelLayout = new javax.swing.GroupLayout(carrerasPanel);
         carrerasPanel.setLayout(carrerasPanelLayout);
         carrerasPanelLayout.setHorizontalGroup(
             carrerasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGroup(carrerasPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+                .addContainerGap())
         );
         carrerasPanelLayout.setVerticalGroup(
             carrerasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 404, Short.MAX_VALUE)
+            .addGroup(carrerasPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabsPanel.addTab("Carreras", carrerasPanel);
 
-        deptList.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         deptList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(deptList);
+        jScrollPane3.setViewportView(deptList);
 
         javax.swing.GroupLayout departamentosPanelLayout = new javax.swing.GroupLayout(departamentosPanel);
         departamentosPanel.setLayout(departamentosPanelLayout);
@@ -153,24 +185,20 @@ public class HomeFrame extends javax.swing.JFrame {
             departamentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(departamentosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                 .addContainerGap())
         );
         departamentosPanelLayout.setVerticalGroup(
             departamentosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(departamentosPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, departamentosPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         tabsPanel.addTab("Departamentos", departamentosPanel);
 
-        statusList.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        statusList.setModel(new DefaultListModel<String>());
-        statusList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        statusList.setVisibleRowCount(50);
-        jScrollPane3.setViewportView(statusList);
+        jScrollPane4.setViewportView(estatusList);
 
         javax.swing.GroupLayout estatusPanelLayout = new javax.swing.GroupLayout(estatusPanel);
         estatusPanel.setLayout(estatusPanelLayout);
@@ -178,14 +206,14 @@ public class HomeFrame extends javax.swing.JFrame {
             estatusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(estatusPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                 .addContainerGap())
         );
         estatusPanelLayout.setVerticalGroup(
             estatusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(estatusPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -215,14 +243,16 @@ public class HomeFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabsPanel)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(logoutBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(deleteDataBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addDataBtn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(logoutBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                        .addComponent(deleteDataBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addDataBtn))
+                    .addComponent(tabsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -258,19 +288,19 @@ public class HomeFrame extends javax.swing.JFrame {
         // Declaración de los posibles casos de Tab donde pueda estar el usuario
         switch (tabsPanel.getSelectedIndex()) {
             case 0 -> {// Alumnos
-                AddStudentFrame frm = new AddStudentFrame(conn, null);
+                AddStudentFrame frm = new AddStudentFrame(conn, this);
                 frm.pack();
                 frm.setLocationRelativeTo(null);
                 frm.setVisible(true);
             }
             case 1 -> {// Carreras
-                AddCareerFrame frm = new AddCareerFrame(conn, null);
+                AddCareerFrame frm = new AddCareerFrame(conn, null, this);
                 frm.pack();
                 frm.setLocationRelativeTo(null);
                 frm.setVisible(true);
             }
             case 2 -> {// Departamentos
-                AddDeptFrame deptFrm = new AddDeptFrame(conn, null);
+                AddDeptFrame deptFrm = new AddDeptFrame(conn, null, this);
                 deptFrm.pack();
                 deptFrm.setLocationRelativeTo(null);
                 deptFrm.setVisible(true);
@@ -323,16 +353,18 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JButton addDataBtn;
     public evidencia.pkg3.bd.CustomLists.Alumnos.AlumnosList<String> alumnosList;
     private javax.swing.JPanel alumnosPanel;
-    private javax.swing.JPanel carrerasPanel;
+    public evidencia.pkg3.bd.CustomLists.Carreras.CarrerasList<String> careerList;
+    public javax.swing.JPanel carrerasPanel;
     private javax.swing.JButton deleteDataBtn;
     private javax.swing.JPanel departamentosPanel;
-    public javax.swing.JList<String> deptList;
+    public evidencia.pkg3.bd.CustomLists.Departamentos.DepartamentosList<String> deptList;
+    public evidencia.pkg3.bd.CustomLists.Estatus.EstatusList<String> estatusList;
     private javax.swing.JPanel estatusPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton logoutBtn;
-    public javax.swing.JList<String> statusList;
     private javax.swing.JTabbedPane tabsPanel;
     // End of variables declaration//GEN-END:variables
 }

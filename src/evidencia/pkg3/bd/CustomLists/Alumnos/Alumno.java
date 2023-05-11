@@ -7,10 +7,6 @@ package evidencia.pkg3.bd.CustomLists.Alumnos;
 public class Alumno {
 
     String nombre, carrera, estatus;
-
-    public String getNombre() {
-        return nombre;
-    }
     
     public Alumno() {
     }
@@ -19,6 +15,10 @@ public class Alumno {
         this.nombre = nombre;
         this.carrera = carrera;
         this.estatus = estatus;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void setNombre(String nombre) {

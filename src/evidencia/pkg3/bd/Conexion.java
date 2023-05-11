@@ -193,6 +193,31 @@ public class Conexion {
         }
         return false;
     }
+    
+    // Recuperar la información de la colección Departamento
+    public String getDeptData(ObjectId id) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> depts = client.getDatabase("Universidad").getCollection("Departamento");
+
+        // Id que buscamos
+        Document filtro = new Document("_id", id);
+
+        String dept;
+        // Creación del cursos para recorrer las Carrera
+        try (MongoCursor<Document> cursor = depts.find(filtro).projection(Projections.include("_id", "departamento")).limit(1).iterator()) {
+
+            dept = "";
+            if (cursor.hasNext()) {
+                Document documento = cursor.next();
+                dept = documento.getString("departamento");
+                System.out.println("Departamento: " + dept);
+            } else {
+                System.out.println("Departamento no encontrado");
+            }
+            cursor.close();
+        }
+        return dept;
+    }
 
     // Recuperar el _id de un Departamento
     public ObjectId getDeptData(String dept) {

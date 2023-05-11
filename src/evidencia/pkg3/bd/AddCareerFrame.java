@@ -1,5 +1,6 @@
 package evidencia.pkg3.bd;
 
+import evidencia.pkg3.bd.CustomLists.Carreras.Carrera;
 import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -16,12 +17,14 @@ public class AddCareerFrame extends javax.swing.JFrame {
     Conexion conn;
 
     AddStudentFrame frm;
+    HomeFrame home;
 
-    public AddCareerFrame(Conexion conexion, AddStudentFrame frame) {
+    public AddCareerFrame(Conexion conexion, AddStudentFrame frame, HomeFrame homeFrm) {
         initComponents();
 
         conn = conexion;
         frm = frame;
+        home = homeFrm;
 
         ArrayList<Document> depts = conn.getAllDeptData();
 
@@ -176,7 +179,7 @@ public class AddCareerFrame extends javax.swing.JFrame {
 
     private void addDeptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDeptBtnActionPerformed
         // TODO add your handling code here:
-        AddDeptFrame deptFrm = new AddDeptFrame(conn, this);
+        AddDeptFrame deptFrm = new AddDeptFrame(conn, this, null);
         deptFrm.pack();
         deptFrm.setLocationRelativeTo(null);
         deptFrm.setVisible(true);
@@ -193,6 +196,7 @@ public class AddCareerFrame extends javax.swing.JFrame {
         String carerra = carreraTF.getText();
         String descripcion = descripcionTF.getText();
         ObjectId departamento = conn.getDeptData(deptCB.getItemAt(deptCB.getSelectedIndex()));
+        String dept = deptCB.getItemAt(deptCB.getSelectedIndex());
 
         Document career = new Document();
         career.append("carrera", carerra);
@@ -203,10 +207,20 @@ public class AddCareerFrame extends javax.swing.JFrame {
             this.dispose();
 
             ArrayList<Document> careers = conn.getAllCareerData();
-            if (!careers.isEmpty() && frm != null) {
-                frm.addCareerBtn.setText("+");
-                frm.careerCB.addItem(carerra);
-                frm.careerCB.setVisible(true);
+
+            //Checamos que tengamos documentos en la lista
+            if (!careers.isEmpty()) {
+                // Caso que la pantalla anterior sea el AddCareerFrame
+                if (frm != null) {
+                    frm.addCareerBtn.setText("+");
+                    frm.careerCB.addItem(carerra);
+                    frm.careerCB.setVisible(true);
+                }
+
+                // Caso que la pantalla anterior sea el HomeFrame
+                if (home != null) {
+                    home.careerList.addItem(new Carrera(carerra, descripcion, dept));
+                }
             }
         }
     }//GEN-LAST:event_addCareerBtnActionPerformed
@@ -245,7 +259,7 @@ public class AddCareerFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddCareerFrame(null, null).setVisible(true);
+                new AddCareerFrame(null, null, null).setVisible(true);
             }
         });
     }

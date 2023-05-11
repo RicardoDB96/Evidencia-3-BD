@@ -1,5 +1,6 @@
 package evidencia.pkg3.bd;
 
+import evidencia.pkg3.bd.CustomLists.Estatus.Estatus;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import org.bson.Document;
@@ -39,7 +40,7 @@ public class AddStatusFrame extends javax.swing.JFrame {
         statusErrorL = new javax.swing.JLabel();
         addStatusBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(350, 180));
 
         jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
@@ -133,14 +134,9 @@ public class AddStatusFrame extends javax.swing.JFrame {
             if (conn.addStatusData(departamento, statusErrorL)) {
                 this.dispose();
 
-                ArrayList<Document> depts = conn.getAllDeptData();
-                if (!depts.isEmpty()) {
-                    DefaultListModel<String> model = new DefaultListModel<>();
-                    home.statusList.setModel(model);
-                    model.addElement(estatus);
-                    //frm.addDeptBtn.setText("+");
-                    //frm.deptCB.addItem(estatus);
-                    //frm.deptCB.setVisible(true);
+                ArrayList<Document> status = conn.getAllStatusData();
+                if (!status.isEmpty() && home != null) {
+                    home.estatusList.addItem(new Estatus(estatus));
                 }
             }
         } else {

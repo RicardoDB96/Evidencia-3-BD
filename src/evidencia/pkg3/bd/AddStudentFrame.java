@@ -37,6 +37,15 @@ public class AddStudentFrame extends javax.swing.JFrame {
             addCareerBtn.setSize(270, 25);
             careerCB.setVisible(false);
         }
+        
+        ArrayList<Document> status = conn.getAllStatusData();
+
+        if (!status.isEmpty()) {
+            for (Document estatus : status) {
+                statusCB.addItem(estatus.getString("estatus"));
+            }
+        } else {
+        }
     }
 
     /**
@@ -107,9 +116,8 @@ public class AddStudentFrame extends javax.swing.JFrame {
 
         studentLNTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
+        statusCB.setMaximumRowCount(30);
         statusCB.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        statusCB.setMaximumRowCount(2);
-        statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inscrito", "No Inscrito" }));
 
         birthDP.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
@@ -212,7 +220,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
 
     private void addCareerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCareerBtnActionPerformed
         // TODO add your handling code here:
-        AddCareerFrame deptFrm = new AddCareerFrame(conn, this);
+        AddCareerFrame deptFrm = new AddCareerFrame(conn, this, null);
         deptFrm.pack();
         deptFrm.setLocationRelativeTo(null);
         deptFrm.setVisible(true);

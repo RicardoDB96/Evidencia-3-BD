@@ -1,5 +1,6 @@
 package evidencia.pkg3.bd;
 
+import evidencia.pkg3.bd.CustomLists.Departamentos.Departamento;
 import java.util.ArrayList;
 import org.bson.Document;
 
@@ -14,11 +15,13 @@ public class AddDeptFrame extends javax.swing.JFrame {
      */
     Conexion conn;
     AddCareerFrame frm;
+    HomeFrame home;
 
-    public AddDeptFrame(Conexion conexion, AddCareerFrame frame) {
+    public AddDeptFrame(Conexion conexion, AddCareerFrame frame, HomeFrame homeFrm) {
         initComponents();
         conn = conexion;
         frm = frame;
+        home = homeFrm;
         deptErrorL.setVisible(false);
     }
 
@@ -132,12 +135,22 @@ public class AddDeptFrame extends javax.swing.JFrame {
             // Comprobar que el insert se realizo exitosamente
             if (conn.addDeptData(departamento, deptErrorL)) {
                 this.dispose();
-
+                
                 ArrayList<Document> depts = conn.getAllDeptData();
+                
+                //Checamos que tengamos documentos en la lista
                 if (!depts.isEmpty()) {
-                    frm.addDeptBtn.setText("+");
-                    frm.deptCB.addItem(dept);
-                    frm.deptCB.setVisible(true);
+                    // Caso que la pantalla anterior sea el AddCareerFrame
+                    if (frm != null) {
+                        frm.addDeptBtn.setText("+");
+                        frm.deptCB.addItem(dept);
+                        frm.deptCB.setVisible(true);
+                    }
+                    
+                    // Caso que la pantalla anterior sea el HomeFrame
+                    if (home != null) {
+                        home.deptList.addItem(new Departamento(dept));
+                    }
                 }
             }
         } else {
@@ -177,7 +190,7 @@ public class AddDeptFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddDeptFrame(null, null).setVisible(true);
+                new AddDeptFrame(null, null, null).setVisible(true);
             }
         });
     }
