@@ -1,25 +1,26 @@
 package evidencia.pkg3.bd;
 
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import org.bson.Document;
 
 /**
  *
  * @author Ricardo
  */
-public class AddDeptFrame extends javax.swing.JFrame {
+public class AddStatusFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form AddDeptFrame
+     * Creates new form AddStatusFrame
      */
     Conexion conn;
-    AddCareerFrame frm;
-
-    public AddDeptFrame(Conexion conexion, AddCareerFrame frame) {
+    HomeFrame home;
+    
+    public AddStatusFrame(Conexion conexion, HomeFrame homeFrm) {
         initComponents();
         conn = conexion;
-        frm = frame;
-        deptErrorL.setVisible(false);
+        home = homeFrm;
+        statusErrorL.setVisible(false);
     }
 
     /**
@@ -33,23 +34,22 @@ public class AddDeptFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        deptTF = new javax.swing.JTextField();
+        statusTF = new javax.swing.JTextField();
         cancelBtn = new javax.swing.JButton();
-        addDeptBtn = new javax.swing.JButton();
-        deptErrorL = new javax.swing.JLabel();
+        statusErrorL = new javax.swing.JLabel();
+        addStatusBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(350, 180));
-        setPreferredSize(new java.awt.Dimension(350, 175));
 
         jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Agregar departamento");
+        jLabel1.setText("Agregar estatus");
 
         jLabel2.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        jLabel2.setText("Departamento");
+        jLabel2.setText("Estatus");
 
-        deptTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        statusTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
         cancelBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
         cancelBtn.setText("Cancelar");
@@ -59,17 +59,17 @@ public class AddDeptFrame extends javax.swing.JFrame {
             }
         });
 
-        addDeptBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
-        addDeptBtn.setText("Agregar");
-        addDeptBtn.addActionListener(new java.awt.event.ActionListener() {
+        statusErrorL.setFont(new java.awt.Font("Space Grotesk Light", 1, 12)); // NOI18N
+        statusErrorL.setForeground(new java.awt.Color(255, 0, 0));
+        statusErrorL.setText("El estatus ingresado ya existe");
+
+        addStatusBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        addStatusBtn.setText("Agregar");
+        addStatusBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addDeptBtnActionPerformed(evt);
+                addStatusBtnActionPerformed(evt);
             }
         });
-
-        deptErrorL.setFont(new java.awt.Font("Space Grotesk Light", 1, 12)); // NOI18N
-        deptErrorL.setForeground(new java.awt.Color(255, 0, 0));
-        deptErrorL.setText("El departamento ingresado ya existe");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -82,14 +82,14 @@ public class AddDeptFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deptTF))
+                        .addComponent(statusTF))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cancelBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addDeptBtn))
+                        .addComponent(addStatusBtn))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 113, Short.MAX_VALUE)
-                        .addComponent(deptErrorL)))
+                        .addGap(0, 154, Short.MAX_VALUE)
+                        .addComponent(statusErrorL)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -100,13 +100,13 @@ public class AddDeptFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(deptTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(statusTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deptErrorL)
+                .addComponent(statusErrorL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
-                    .addComponent(addDeptBtn))
+                    .addComponent(addStatusBtn))
                 .addContainerGap())
         );
 
@@ -119,33 +119,35 @@ public class AddDeptFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    private void addDeptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDeptBtnActionPerformed
+    private void addStatusBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStatusBtnActionPerformed
         // TODO add your handling code here:
-        String dept = deptTF.getText();
+        String estatus = statusTF.getText();
 
         Document departamento = new Document();
-        departamento.append("departamento", dept);
+        departamento.append("estatus", estatus);
 
         // Comprobar que haya escrito algun valor
-        if (!"".equals(dept)) {
-            deptErrorL.setVisible(false);
+        if (!"".equals(estatus)) {
+            statusErrorL.setVisible(false);
             // Comprobar que el insert se realizo exitosamente
-            if (conn.addDeptData(departamento, deptErrorL)) {
+            if (conn.addStatusData(departamento, statusErrorL)) {
                 this.dispose();
 
                 ArrayList<Document> depts = conn.getAllDeptData();
                 if (!depts.isEmpty()) {
-                    frm.addDeptBtn.setText("+");
-                    frm.deptCB.addItem(dept);
-                    frm.deptCB.setVisible(true);
+                    DefaultListModel<String> model = new DefaultListModel<>();
+                    home.statusList.setModel(model);
+                    model.addElement(estatus);
+                    //frm.addDeptBtn.setText("+");
+                    //frm.deptCB.addItem(estatus);
+                    //frm.deptCB.setVisible(true);
                 }
             }
         } else {
-            deptErrorL.setText("Debe escribir el nombre de un departamento");
-            deptErrorL.setVisible(true);
+            statusErrorL.setText("Debe escribir el nombre de un estatus");
+            statusErrorL.setVisible(true);
         }
-
-    }//GEN-LAST:event_addDeptBtnActionPerformed
+    }//GEN-LAST:event_addStatusBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,30 +166,30 @@ public class AddDeptFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddDeptFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddDeptFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddDeptFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddDeptFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddDeptFrame(null, null).setVisible(true);
+                new AddStatusFrame(null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addDeptBtn;
+    private javax.swing.JButton addStatusBtn;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JLabel deptErrorL;
-    private javax.swing.JTextField deptTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel statusErrorL;
+    private javax.swing.JTextField statusTF;
     // End of variables declaration//GEN-END:variables
 }

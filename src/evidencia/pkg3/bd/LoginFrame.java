@@ -11,11 +11,8 @@ public class LoginFrame extends javax.swing.JFrame {
      */
     public LoginFrame() {
         super("Evidencia 3 Base de Datos");
-        //this.setVisible(true);
-        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,30 +134,35 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        // TODO add your handling code here:
+        // Recuperamos los valores de usuario y contraseña ingresados en los TextFields
         String username = usernameTF.getText();
         char[] password = passwordPF.getPassword();
-        
+
+        // Declaramos una nueva conexion con MongoDB
         Conexion conn = new Conexion();
-        
+
+        // Llamamos la funcion de conexion con MongoDB y obtenemos si fue exitosa
+        // si no lo fue, la misma funcion se encarga de mostrar cual fue el error
+        // que provoco que fallara el intento de conexion a MongoDB
         boolean valid = conn.loginToDB(username, String.valueOf(password), errorLabel);
-        
+
+        // Si fue exitosa, navegamos al HomeFrame
         if (valid) {
-            AlumnosFrame frm = new AlumnosFrame(conn);
+            HomeFrame frm = new HomeFrame(conn);
             frm.pack();
             frm.setLocationRelativeTo(null);
             frm.setVisible(true);
-            
+
             this.setVisible(false);
             this.dispose();
-            
+
         }
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void showPasswordCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordCBActionPerformed
-        // TControl para mostrar/ocultar la contraseña
+        // Control para mostrar/ocultar la contraseña
         if (showPasswordCB.isSelected()) {
-            passwordPF.setEchoChar((char)0);
+            passwordPF.setEchoChar((char) 0);
         } else {
             passwordPF.setEchoChar('*');
         }
@@ -197,7 +199,7 @@ public class LoginFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 LoginFrame frm = new LoginFrame();
-                
+
                 frm.pack();
                 frm.setLocationRelativeTo(null);
                 frm.setVisible(true);

@@ -1,7 +1,10 @@
 package evidencia.pkg3.bd;
 
+import evidencia.pkg3.bd.CustomLists.Alumnos.Alumno;
 import java.util.ArrayList;
+import java.util.Date;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -13,11 +16,13 @@ public class AddStudentFrame extends javax.swing.JFrame {
      * Creates new form AddFrame
      */
     Conexion conn;
+    HomeFrame frm;
 
-    public AddStudentFrame(Conexion conexion) {
+    public AddStudentFrame(Conexion conexion, HomeFrame frame) {
         initComponents();
 
         conn = conexion;
+        frm = frame;
         ArrayList<Document> carreras = conn.getAllCareerData();
 
         if (!carreras.isEmpty()) {
@@ -32,7 +37,6 @@ public class AddStudentFrame extends javax.swing.JFrame {
             addCareerBtn.setSize(270, 25);
             careerCB.setVisible(false);
         }
-
     }
 
     /**
@@ -61,46 +65,51 @@ public class AddStudentFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(380, 265));
-        setMinimumSize(new java.awt.Dimension(380, 265));
+        setMinimumSize(new java.awt.Dimension(400, 325));
         setSize(new java.awt.Dimension(380, 265));
 
+        jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Agregar estudiante");
-        jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
 
-        jLabel2.setText("Nombre");
         jLabel2.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel2.setText("Nombre");
 
-        jLabel3.setText("Apellidos");
         jLabel3.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel3.setText("Apellidos");
 
-        jLabel4.setText("Fecha de nacimiento");
         jLabel4.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel4.setText("Fecha de nacimiento");
 
-        jLabel5.setText("Carrera");
         jLabel5.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel5.setText("Carrera");
 
-        jLabel6.setText("Estatus");
         jLabel6.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel6.setText("Estatus");
 
-        cancelBtn.setText("Cancelar");
         cancelBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        cancelBtn.setText("Cancelar");
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
 
-        addStudentBtn.setText("Agregar");
         addStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        addStudentBtn.setText("Agregar");
+        addStudentBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addStudentBtnActionPerformed(evt);
+            }
+        });
 
         studentNameTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
         studentLNTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
+        statusCB.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         statusCB.setMaximumRowCount(2);
         statusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inscrito", "No Inscrito" }));
-        statusCB.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
         birthDP.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
@@ -150,7 +159,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(careerCB, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(addCareerBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(addCareerBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
                                 .addContainerGap())))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
@@ -185,7 +194,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
                     .addComponent(addStudentBtn))
@@ -208,6 +217,33 @@ public class AddStudentFrame extends javax.swing.JFrame {
         deptFrm.setLocationRelativeTo(null);
         deptFrm.setVisible(true);
     }//GEN-LAST:event_addCareerBtnActionPerformed
+
+    private void addStudentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBtnActionPerformed
+        // TODO add your handling code here:
+        String nombre = studentNameTF.getText();
+        String apellidos = studentLNTF.getText();
+        ObjectId carrera = conn.getIdCareerData(careerCB.getItemAt(careerCB.getSelectedIndex()));
+        Date fechaNacimiento = new Fechas().formatDate(birthDP.getDate().toString());
+        ObjectId estatus = conn.getIdStatusData(statusCB.getItemAt(statusCB.getSelectedIndex()));
+
+        if (fechaNacimiento != null) {
+            Document student = new Document();
+            student.append("nombre", nombre);
+            student.append("apellidos", apellidos);
+            student.append("carrera", carrera);
+            student.append("fechaNacimiento", fechaNacimiento);
+            student.append("estatus", estatus);
+
+            if (conn.addStudentData(student, null)) {
+                this.dispose();
+
+                ArrayList<Document> careers = conn.getAllCareerData();
+                if (!careers.isEmpty() && frm != null) {
+                    frm.alumnosList.addItem(new Alumno(nombre + " " + apellidos, careerCB.getItemAt(careerCB.getSelectedIndex()), statusCB.getItemAt(statusCB.getSelectedIndex())));
+                }
+            }
+        }
+    }//GEN-LAST:event_addStudentBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,7 +276,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddStudentFrame(null).setVisible(true);
+                new AddStudentFrame(null, null).setVisible(true);
             }
         });
     }

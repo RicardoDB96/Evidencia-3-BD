@@ -2,6 +2,7 @@ package evidencia.pkg3.bd;
 
 import java.util.ArrayList;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -12,19 +13,18 @@ public class AddCareerFrame extends javax.swing.JFrame {
     /**
      * Creates new form AddCareerFrame
      */
-    
     Conexion conn;
-    
+
     AddStudentFrame frm;
-    
+
     public AddCareerFrame(Conexion conexion, AddStudentFrame frame) {
         initComponents();
-        
+
         conn = conexion;
         frm = frame;
-        
+
         ArrayList<Document> depts = conn.getAllDeptData();
-        
+
         if (!depts.isEmpty()) {
             addDeptBtn.setText("+");
             addDeptBtn.setSize(30, 25);
@@ -61,7 +61,7 @@ public class AddCareerFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(395, 200));
-        setMinimumSize(new java.awt.Dimension(395, 200));
+        setMinimumSize(new java.awt.Dimension(420, 250));
         setSize(new java.awt.Dimension(395, 200));
 
         jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
@@ -190,26 +190,23 @@ public class AddCareerFrame extends javax.swing.JFrame {
 
     private void addCareerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCareerBtnActionPerformed
         // TODO add your handling code here:
-        int id = conn.getAllCareerData().size();
         String carerra = carreraTF.getText();
         String descripcion = descripcionTF.getText();
-        int departamento = conn.getDeptData(deptCB.getItemAt(deptCB.getSelectedIndex()));
-        
-        
+        ObjectId departamento = conn.getDeptData(deptCB.getItemAt(deptCB.getSelectedIndex()));
+
         Document career = new Document();
-        career.append("_id", id);
         career.append("carrera", carerra);
         career.append("descripcion", descripcion);
         career.append("departamento", departamento);
-        
+
         if (conn.addCareerData(career, null)) {
             this.dispose();
-            
+
             ArrayList<Document> careers = conn.getAllCareerData();
-                if (!careers.isEmpty() && frm != null) {
-                    frm.addCareerBtn.setText("+");
-                    frm.careerCB.addItem(carerra);
-                    frm.careerCB.setVisible(true);
+            if (!careers.isEmpty() && frm != null) {
+                frm.addCareerBtn.setText("+");
+                frm.careerCB.addItem(carerra);
+                frm.careerCB.setVisible(true);
             }
         }
     }//GEN-LAST:event_addCareerBtnActionPerformed

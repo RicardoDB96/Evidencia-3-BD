@@ -1,4 +1,4 @@
-package evidencia.pkg3.bd.Alumnos;
+package evidencia.pkg3.bd.CustomLists.Alumnos;
 
 /**
  *
@@ -12,13 +12,17 @@ public class AlumnosListItem extends javax.swing.JPanel {
     public AlumnosListItem() {
         initComponents();
     }
-    
+
     public void setItem(Object obj) {
-        if (obj instanceof Item) {
-            Item item = (Item) obj;
-            studentName.setText(item.getText());
+        if (obj instanceof Alumno) {
+            Alumno item = (Alumno) obj;
+            studentName.setText(item.getNombre());
+            studentCareer.setText(item.getCarrera());
+            studentStatus.setText(item.getEstatus());
         } else {
             studentName.setText(obj + "");
+            studentCareer.setText(obj + "");
+            studentStatus.setText(obj + "");
         }
     }
 

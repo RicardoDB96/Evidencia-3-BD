@@ -1,4 +1,4 @@
-package evidencia.pkg3.bd.Alumnos;
+package evidencia.pkg3.bd.CustomLists.Alumnos;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -17,38 +17,38 @@ import javax.swing.ListCellRenderer;
  * @param <E>
  */
 public class AlumnosList<E extends Object> extends JList<E> {
-    
+
     private final DefaultListModel model;
     private final Color selectedColor;
     private int hoverIndex = -1;
-    
+
     public AlumnosList() {
         model = new DefaultListModel();
         selectedColor = new Color(204, 204, 204);
         setModel(model);
-        
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent me) {
                 hoverIndex = -1;
                 repaint();
             }
-            
+
         });
-        
+
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent me) {
                 checkMouse(me);
             }
-            
+
             @Override
             public void mouseDragged(MouseEvent me) {
                 checkMouse(me);
             }
         });
     }
-    
+
     private void checkMouse(MouseEvent me) {
         Point p = me.getPoint();
         int index = locationToIndex(p);
@@ -57,7 +57,7 @@ public class AlumnosList<E extends Object> extends JList<E> {
             repaint();
         }
     }
-    
+
     @Override
     public ListCellRenderer<? super E> getCellRenderer() {
         return new DefaultListCellRenderer() {
@@ -72,8 +72,12 @@ public class AlumnosList<E extends Object> extends JList<E> {
             }
         };
     }
-    
-    public void addItem(Item item) {
+
+    public void addItem(Alumno item) {
         model.addElement(item);
+    }
+    
+    public void removeAllItem(Alumno item) {
+        model.removeAllElements();
     }
 }
