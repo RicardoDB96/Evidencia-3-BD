@@ -18,13 +18,15 @@ public class AddCareerFrame extends javax.swing.JFrame {
 
     AddStudentFrame frm;
     HomeFrame home;
+    EditStudentFrame edit;
 
-    public AddCareerFrame(Conexion conexion, AddStudentFrame frame, HomeFrame homeFrm) {
+    public AddCareerFrame(Conexion conexion, AddStudentFrame frame, HomeFrame homeFrm, EditStudentFrame editar) {
         initComponents();
 
         conn = conexion;
         frm = frame;
         home = homeFrm;
+        edit = editar;
 
         ArrayList<Document> depts = conn.getAllDeptData();
 
@@ -259,7 +261,7 @@ public class AddCareerFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddCareerFrame(null, null, null).setVisible(true);
+                new AddCareerFrame(null, null, null, null).setVisible(true);
             }
         });
     }

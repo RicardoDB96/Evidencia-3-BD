@@ -1,5 +1,10 @@
 package evidencia.pkg3.bd;
 
+import evidencia.pkg3.bd.CustomLists.Alumnos.Alumno;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 /**
@@ -14,13 +19,62 @@ public class StudentInfoFrame extends javax.swing.JFrame {
      */
     
     ObjectId id;
-    public StudentInfoFrame(ObjectId ID) {
+    Conexion conn;
+    Document student;
+    HomeFrame home;
+    
+    public StudentInfoFrame(ObjectId ID, Conexion conexion, HomeFrame frm) {
         initComponents();
         id = ID;
+        conn = conexion;
+        home = frm;
         
-        System.out.println(id);
+        student = conn.getStudentData(id);
+        
+        // Poner la información obligatoria del Alumno en las etiquetas
+        studentName.setText(student.getString("nombre"));
+        studentLN.setText(student.getString("apellidos"));
+        studentBirth.setText(new Fechas().formatLocalDate(student.getString("fechaNacimiento")).toString());
+        studentCareer.setText(conn.getCareerData(student.getObjectId("carrera")));
+        studentStatus.setText(conn.getStatusData(student.getObjectId("estatus")));
+        
+        // Poner la información optativa del alumno en las etiquetas
+        
+        String correo = student.getString("email");
+        if (!"".equals(correo)) {
+            studentEmail.setText(correo);
+            email.setVisible(true);
+            studentEmail.setVisible(true);
+        } else {
+            email.setVisible(false);
+            studentEmail.setVisible(false);
+        }
+        
+        
+        String telefono = student.getString("telefono");
+        System.out.println(!"".equals(telefono));
+        if (!"".equals(telefono)) {
+            studentPhone.setText(telefono);
+            phone.setVisible(true);
+            studentPhone.setVisible(true);
+        } else {
+            phone.setVisible(false);
+            studentPhone.setVisible(false);
+        }
+        
+        
+        
+        String direccion = student.getString("direccion");
+        if (!"".equals(direccion)) {
+            studentAddress.setText(direccion);
+            address.setVisible(true);
+            studentAddress.setVisible(true);
+        } else {
+            address.setVisible(false);
+            studentAddress.setVisible(false);
+        }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -37,19 +91,19 @@ public class StudentInfoFrame extends javax.swing.JFrame {
         studentLN = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         studentBirth = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        email = new javax.swing.JLabel();
         studentCareer = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         studentStatus = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         studentEmail = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        address = new javax.swing.JLabel();
         studentAddress = new javax.swing.JLabel();
         studentPhone = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        phone = new javax.swing.JLabel();
+        cancelBtn = new javax.swing.JButton();
+        deleteStudentBtn = new javax.swing.JButton();
+        editStudentBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -75,8 +129,8 @@ public class StudentInfoFrame extends javax.swing.JFrame {
         studentBirth.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         studentBirth.setText("Fecha de nacimiento del alumno");
 
-        jLabel8.setFont(new java.awt.Font("Space Grotesk Light", 1, 16)); // NOI18N
-        jLabel8.setText("Email");
+        email.setFont(new java.awt.Font("Space Grotesk Light", 1, 16)); // NOI18N
+        email.setText("Email");
 
         studentCareer.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         studentCareer.setText("Carrera del alumno");
@@ -93,8 +147,8 @@ public class StudentInfoFrame extends javax.swing.JFrame {
         studentEmail.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         studentEmail.setText("Email del alumno");
 
-        jLabel14.setFont(new java.awt.Font("Space Grotesk Light", 1, 16)); // NOI18N
-        jLabel14.setText("Dirección");
+        address.setFont(new java.awt.Font("Space Grotesk Light", 1, 16)); // NOI18N
+        address.setText("Dirección");
 
         studentAddress.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         studentAddress.setText("Dirección del alumno");
@@ -102,22 +156,32 @@ public class StudentInfoFrame extends javax.swing.JFrame {
         studentPhone.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         studentPhone.setText("Telefono del alumno");
 
-        jLabel17.setFont(new java.awt.Font("Space Grotesk Light", 1, 16)); // NOI18N
-        jLabel17.setText("Teléfono");
+        phone.setFont(new java.awt.Font("Space Grotesk Light", 1, 16)); // NOI18N
+        phone.setText("Teléfono");
 
-        jButton1.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
-        jButton1.setText("Cancelar");
-
-        jButton2.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
-        jButton2.setText("Dar de baja");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancelBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        cancelBtn.setText("Cancelar");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelBtnActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
-        jButton3.setText("Modificar");
+        deleteStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        deleteStudentBtn.setText("Dar de baja");
+        deleteStudentBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteStudentBtnActionPerformed(evt);
+            }
+        });
+
+        editStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        editStudentBtn.setText("Modificar");
+        editStudentBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editStudentBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,22 +197,22 @@ public class StudentInfoFrame extends javax.swing.JFrame {
                     .addComponent(studentLN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(studentBirth, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(studentCareer, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(studentStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(studentEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(address, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(studentPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(phone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(studentAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(cancelBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(deleteStudentBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(editStudentBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -177,31 +241,77 @@ public class StudentInfoFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(studentStatus)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
+                .addComponent(email)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(studentEmail)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel17)
+                .addComponent(phone)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(studentPhone)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel14)
+                .addComponent(address)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(studentAddress)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
+                    .addComponent(cancelBtn)
+                    .addComponent(editStudentBtn)
+                    .addComponent(deleteStudentBtn))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void deleteStudentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteStudentBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        int option = JOptionPane.showOptionDialog(null, "¿Deseas dar de baja al alumno?", "COnfirmación de baja",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+        if (option == JOptionPane.YES_OPTION) {
+            // Se borra el alumno
+            if (conn.deleteStudentData(id)) {
+                this.dispose();
+                
+                ArrayList<Document> students = conn.getAllStudentData();
+                System.out.println(home);
+                if (!students.isEmpty() && home != null) {
+                    if (home != null) {
+                        home.alumnosList.removeAllItem();
+                    
+                        for (Document alumno : students) {
+                            ObjectId stundetId = alumno.getObjectId("_id");
+                            String nombre = alumno.getString("nombre");
+                            String apellidos = alumno.getString("apellidos");
+                            String career = conn.getCareerData(alumno.getObjectId("carrera"));
+                            String status = conn.getStatusData(alumno.getObjectId("estatus"));
+                            home.alumnosList.addItem(new Alumno(stundetId, conn, home, nombre, apellidos, new Date(), career, status));
+                        }
+                    }
+                } else {
+                    home.alumnosList.removeAllItem();
+                }
+            }
+        } else {
+            // Opcion no
+            System.out.println("Se cancelo la baja del alumno");
+        }
+        
+    }//GEN-LAST:event_deleteStudentBtnActionPerformed
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_cancelBtnActionPerformed
+
+    private void editStudentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editStudentBtnActionPerformed
+        // TODO add your handling code here:
+        EditStudentFrame frm = new EditStudentFrame(id, conn, home, this);
+        frm.pack();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
+    }//GEN-LAST:event_editStudentBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,31 +343,31 @@ public class StudentInfoFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new StudentInfoFrame(null).setVisible(true);
+                new StudentInfoFrame(null, null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    public javax.swing.JLabel address;
+    private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton deleteStudentBtn;
+    private javax.swing.JButton editStudentBtn;
+    public javax.swing.JLabel email;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel studentAddress;
-    private javax.swing.JLabel studentBirth;
-    private javax.swing.JLabel studentCareer;
-    private javax.swing.JLabel studentEmail;
-    private javax.swing.JLabel studentLN;
-    private javax.swing.JLabel studentName;
-    private javax.swing.JLabel studentPhone;
-    private javax.swing.JLabel studentStatus;
+    public javax.swing.JLabel phone;
+    public javax.swing.JLabel studentAddress;
+    public javax.swing.JLabel studentBirth;
+    public javax.swing.JLabel studentCareer;
+    public javax.swing.JLabel studentEmail;
+    public javax.swing.JLabel studentLN;
+    public javax.swing.JLabel studentName;
+    public javax.swing.JLabel studentPhone;
+    public javax.swing.JLabel studentStatus;
     // End of variables declaration//GEN-END:variables
 }

@@ -173,7 +173,7 @@ public class DeleteWKeyFrame extends javax.swing.JFrame {
                     home.deptList.removeAllItem();
                     
                     for (Document dept : depts) {
-                        home.deptList.addItem(new Departamento(dept.getString("estatus")));
+                        home.deptList.addItem(new Departamento(dept.getString("departamento")));
                     }
                 }
             }

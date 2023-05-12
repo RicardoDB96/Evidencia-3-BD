@@ -44,7 +44,7 @@ public class AlumnosList<E extends Object> extends JList<E> {
                     StudentInfoFrame frm;
                     
                     if (selectedItem != null) {
-                        frm = new StudentInfoFrame(selectedItem.id);
+                        frm = new StudentInfoFrame(selectedItem.getId(), selectedItem.getConn(), selectedItem.getHome());
                         frm.pack();
                         frm.setLocationRelativeTo(null);
                         frm.setVisible(true);

@@ -1,5 +1,7 @@
 package evidencia.pkg3.bd.CustomLists.Alumnos;
 
+import evidencia.pkg3.bd.Conexion;
+import evidencia.pkg3.bd.HomeFrame;
 import java.util.Date;
 import org.bson.types.ObjectId;
 
@@ -10,22 +12,23 @@ import org.bson.types.ObjectId;
 public class Alumno {
 
     ObjectId id;
-    String nombre, apellidos, carrera, estatus, email, phone, address;
+    String nombre, apellidos, carrera, estatus;
     Date birth;
+    Conexion conn;
+    HomeFrame home;
 
     public Alumno() {
     }
 
-    public Alumno(ObjectId id, String nombre, String apellidos, Date birth, String carrera, String estatus, String email, String phone, String address) {
+    public Alumno(ObjectId id, Conexion conn, HomeFrame frm, String nombre, String apellidos, Date birth, String carrera, String estatus) {
         this.id = id;
+        this.conn = conn;
+        this.home = frm;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.birth = birth;
         this.carrera = carrera;
         this.estatus = estatus;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
     }
     
     public ObjectId getId() {
@@ -34,6 +37,22 @@ public class Alumno {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+    
+    public Conexion getConn() {
+        return conn;
+    }
+
+    public void setConn(Conexion conn) {
+        this.conn = conn;
+    }
+
+    public HomeFrame getHome() {
+        return home;
+    }
+
+    public void setHome(HomeFrame home) {
+        this.home = home;
     }
 
     public String getNombre() {
@@ -74,29 +93,5 @@ public class Alumno {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

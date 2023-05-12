@@ -80,6 +80,32 @@ public class Conexion {
         }
         return false;// Ocurrio un error en el Insert
     }
+    
+    // Ingresar un documento a la colección Alumnos
+    public boolean updateStudentData(ObjectId id, Document student, JLabel error) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> students = client.getDatabase("Universidad").getCollection("Alumnos");
+        
+        Document filter = new Document("_id", id);
+        
+        Document updates = new Document("$set", student);
+
+        // Intento de ingreso del documento con lo datos ingresados
+        try {
+            students.updateOne(filter, updates);
+            return true;// Fue exitoso el Insert
+        } catch (MongoWriteException e) {
+            if (e.getCode() == 11000) {// Error de duplicación, en este caso no deberia de ocurrir
+                error.setVisible(true);
+                System.out.println("El alumno ya existe");
+            } else {// Error general al ingresar datos
+                System.out.println(e);
+            }
+        } catch (MongoException e) {// Error de MongoDB
+            System.out.println(e);
+        }
+        return false;// Ocurrio un error en el Insert
+    }
 
     // Recuperar la información de un Alumno
     public ObjectId getIdStudentData(Alumno student) {
@@ -411,22 +437,21 @@ public class Conexion {
     }
 
     // Ingresar un documento a la colección Carrera
-    public boolean deleteStudentData(String student, JLabel error) {
+    public boolean deleteStudentData(ObjectId studentId) {
         // Referencia de la base de datos y de la colección
-        MongoCollection<Document> carrera = client.getDatabase("Universidad").getCollection("Carrera");
+        MongoCollection<Document> carrera = client.getDatabase("Universidad").getCollection("Alumnos");
 
         // Crear el filtro para el documento a borrar
-        Bson filtro = Filters.eq("carrera", student);
+        Bson filtro = Filters.eq("_id", studentId);
 
         try {
             DeleteResult result = carrera.deleteOne(filtro);
 
             if (result.getDeletedCount() == 1) {
-                System.out.println("Se borro exitosamente la carrera: " + student);
+                System.out.println("Se borro exitosamente el alumno con Id: " + studentId);
                 return true;
             } else {
-                error.setText("No se encontro ninguna carrera con ese nombre");
-                error.setVisible(true);
+                System.out.println("No se encontro ninguna carrera con ese nombre");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

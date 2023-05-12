@@ -107,7 +107,7 @@ public class HomeFrame extends javax.swing.JFrame {
                 String apellidos = alumno.getString("apellidos");
                 String carrera = conn.getCareerData(alumno.getObjectId("carrera"));
                 String estatus = conn.getStatusData(alumno.getObjectId("estatus"));
-                alumnosList.addItem(new Alumno(id, nombre, apellidos, new Date(), carrera, estatus, "", "", ""));
+                alumnosList.addItem(new Alumno(id, conn, this, nombre, apellidos, new Date(), carrera, estatus));
             }
         } else {// Si no, decimos que la lista esta vacia
         }
@@ -314,7 +314,7 @@ public class HomeFrame extends javax.swing.JFrame {
                 frm.setVisible(true);
             }
             case 1 -> {// Carreras
-                AddCareerFrame frm = new AddCareerFrame(conn, null, this);
+                AddCareerFrame frm = new AddCareerFrame(conn, null, this, null);
                 frm.pack();
                 frm.setLocationRelativeTo(null);
                 frm.setVisible(true);

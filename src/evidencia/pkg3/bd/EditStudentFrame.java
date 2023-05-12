@@ -1,6 +1,7 @@
 package evidencia.pkg3.bd;
 
 import evidencia.pkg3.bd.CustomLists.Alumnos.Alumno;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import org.bson.Document;
@@ -10,19 +11,23 @@ import org.bson.types.ObjectId;
  *
  * @author Ricardo
  */
-public class AddStudentFrame extends javax.swing.JFrame {
+public class EditStudentFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form AddFrame
      */
+    ObjectId id;
     Conexion conn;
-    HomeFrame frm;
+    HomeFrame home;
+    StudentInfoFrame info;
 
-    public AddStudentFrame(Conexion conexion, HomeFrame frame) {
+    public EditStudentFrame(ObjectId ID, Conexion conexion, HomeFrame frame, StudentInfoFrame informacion) {
         initComponents();
-
+        id = ID;
         conn = conexion;
-        frm = frame;
+        home = frame;
+        info = informacion;
+        
         ArrayList<Document> carreras = conn.getAllCareerData();
 
         if (!carreras.isEmpty()) {
@@ -46,6 +51,18 @@ public class AddStudentFrame extends javax.swing.JFrame {
             }
         } else {
         }
+        
+        // Poner información actual en los TextFields
+        Document alumno = conn.getStudentData(id);
+        
+        studentNameTF.setText(alumno.getString("nombre"));
+        studentLNTF.setText(alumno.getString("apellidos"));
+        birthDP.setDate(new Fechas().formatLocalDate(alumno.getString("fechaNacimiento")));
+        careerCB.setSelectedItem(conn.getCareerData(alumno.getObjectId("carrera")));
+        statusCB.setSelectedItem(conn.getStatusData(alumno.getObjectId("estatus")));
+        emailTF.setText(alumno.getString("email"));
+        phoneTF.setText(alumno.getString("telefono"));
+        addressTF.setText(alumno.getString("direccion"));
     }
 
     /**
@@ -68,7 +85,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         cancelBtn = new javax.swing.JButton();
-        addStudentBtn = new javax.swing.JButton();
+        saveStudentBtn = new javax.swing.JButton();
         studentNameTF = new javax.swing.JTextField();
         studentLNTF = new javax.swing.JTextField();
         statusCB = new javax.swing.JComboBox<>();
@@ -83,13 +100,11 @@ public class AddStudentFrame extends javax.swing.JFrame {
         jLabel7.setText("jLabel7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(400, 500));
         setMinimumSize(new java.awt.Dimension(400, 500));
-        setPreferredSize(new java.awt.Dimension(400, 500));
         setSize(new java.awt.Dimension(400, 500));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Agregar estudiante");
+        jLabel1.setText("Editar estudiante");
         jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
 
         jLabel2.setText("Nombre*");
@@ -107,14 +122,14 @@ public class AddStudentFrame extends javax.swing.JFrame {
         jLabel6.setText("Estatus*");
         jLabel6.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
-        jLabel8.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         jLabel8.setText("Email");
+        jLabel8.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         jLabel9.setText("Teléfono");
+        jLabel9.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
         jLabel10.setText("Dirección");
+        jLabel10.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
         cancelBtn.setText("Cancelar");
         cancelBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
@@ -124,11 +139,11 @@ public class AddStudentFrame extends javax.swing.JFrame {
             }
         });
 
-        addStudentBtn.setText("Agregar");
-        addStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
-        addStudentBtn.addActionListener(new java.awt.event.ActionListener() {
+        saveStudentBtn.setText("Guardar");
+        saveStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        saveStudentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addStudentBtnActionPerformed(evt);
+                saveStudentBtnActionPerformed(evt);
             }
         });
 
@@ -165,8 +180,8 @@ public class AddStudentFrame extends javax.swing.JFrame {
 
         addressTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Space Grotesk Light", 1, 12)); // NOI18N
         jLabel11.setText("*Campo obligatorio");
+        jLabel11.setFont(new java.awt.Font("Space Grotesk Light", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,7 +194,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cancelBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addStudentBtn)
+                        .addComponent(saveStudentBtn)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -260,7 +275,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
-                    .addComponent(addStudentBtn))
+                    .addComponent(saveStudentBtn))
                 .addContainerGap())
         );
 
@@ -275,13 +290,13 @@ public class AddStudentFrame extends javax.swing.JFrame {
 
     private void addCareerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCareerBtnActionPerformed
         // TODO add your handling code here:
-        AddCareerFrame deptFrm = new AddCareerFrame(conn, this, null, null);
+        AddCareerFrame deptFrm = new AddCareerFrame(conn, null, null, this);
         deptFrm.pack();
         deptFrm.setLocationRelativeTo(null);
         deptFrm.setVisible(true);
     }//GEN-LAST:event_addCareerBtnActionPerformed
 
-    private void addStudentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBtnActionPerformed
+    private void saveStudentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStudentBtnActionPerformed
         // Datos obligatorios
         String nombre = studentNameTF.getText();
         String apellidos = studentLNTF.getText();
@@ -314,25 +329,73 @@ public class AddStudentFrame extends javax.swing.JFrame {
             student.append("telefono", phone);
             student.append("direccion", address);
 
-            if (conn.addStudentData(student, null)) {
+            if (conn.updateStudentData(id, student, null)) {
                 this.dispose();
 
                 ArrayList<Document> students = conn.getAllStudentData();
-                if (!students.isEmpty() && frm != null) {
-                    frm.alumnosList.removeAllItem();
+                if (!students.isEmpty()) {
+                    if (home != null) {
+                        home.alumnosList.removeAllItem();
                     
-                    for (Document alumno : students) {
-                        ObjectId id = alumno.getObjectId("_id");
-                        nombre = alumno.getString("nombre");
-                        apellidos = alumno.getString("apellidos");
-                        String career = careerCB.getItemAt(careerCB.getSelectedIndex());
-                        String status = statusCB.getItemAt(statusCB.getSelectedIndex());
-                        frm.alumnosList.addItem(new Alumno(id, conn, frm, nombre, apellidos, new Date(), career, status));
+                        for (Document alumno : students) {
+                            ObjectId id = alumno.getObjectId("_id");
+                            nombre = alumno.getString("nombre");
+                            apellidos = alumno.getString("apellidos");
+                            String career = careerCB.getItemAt(careerCB.getSelectedIndex());
+                            String status = statusCB.getItemAt(statusCB.getSelectedIndex());
+                            home.alumnosList.addItem(new Alumno(id, conn, home, nombre, apellidos, new Date(), career, status));
+                        }
+                    }
+                    if (info != null) {
+                        Document alumno = conn.getStudentData(id);
+                        
+                        // Poner la información obligatoria del Alumno en las etiquetas
+                        info.studentName.setText(alumno.getString("nombre"));
+                        info.studentLN.setText(alumno.getString("apellidos"));
+                        info.studentBirth.setText(alumno.getString("fechaNacimiento"));
+                        info.studentCareer.setText(conn.getCareerData(alumno.getObjectId("carrera")));
+                        info.studentStatus.setText(conn.getStatusData(alumno.getObjectId("estatus")));
+
+                        // Poner la información optativa del alumno en las etiquetas
+
+                        String correo = alumno.getString("email");
+                        if (!"".equals(correo)) {
+                            info.studentEmail.setText(correo);
+                            info.email.setVisible(true);
+                            info.studentEmail.setVisible(true);
+                        } else {
+                            info.email.setVisible(false);
+                            info.studentEmail.setVisible(false);
+                        }
+
+
+                        String telefono = alumno.getString("telefono");
+                        System.out.println(!"".equals(telefono));
+                        if (!"".equals(telefono)) {
+                            info.studentPhone.setText(telefono);
+                            info.phone.setVisible(true);
+                            info.studentPhone.setVisible(true);
+                        } else {
+                            info.phone.setVisible(false);
+                            info.studentPhone.setVisible(false);
+                        }
+
+
+
+                        String direccion = alumno.getString("direccion");
+                        if (!"".equals(direccion)) {
+                            info.studentAddress.setText(direccion);
+                            info.address.setVisible(true);
+                            info.studentAddress.setVisible(true);
+                        } else {
+                            info.address.setVisible(false);
+                            info.studentAddress.setVisible(false);
+                        }
                     }
                 }
             }
         }
-    }//GEN-LAST:event_addStudentBtnActionPerformed
+    }//GEN-LAST:event_saveStudentBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -351,28 +414,29 @@ public class AddStudentFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditStudentFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddStudentFrame(null, null).setVisible(true);
+                new EditStudentFrame(null, null, null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton addCareerBtn;
-    private javax.swing.JButton addStudentBtn;
     private javax.swing.JTextField addressTF;
     private com.github.lgooddatepicker.components.DatePicker birthDP;
     private javax.swing.JButton cancelBtn;
@@ -390,6 +454,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField phoneTF;
+    private javax.swing.JButton saveStudentBtn;
     private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JTextField studentLNTF;
     private javax.swing.JTextField studentNameTF;
