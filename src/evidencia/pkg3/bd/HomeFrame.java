@@ -5,9 +5,10 @@ import evidencia.pkg3.bd.CustomLists.Carreras.Carrera;
 import evidencia.pkg3.bd.CustomLists.Departamentos.Departamento;
 import evidencia.pkg3.bd.CustomLists.Estatus.Estatus;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
+import java.util.Date;
 import javax.swing.event.ChangeEvent;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -26,36 +27,26 @@ public class HomeFrame extends javax.swing.JFrame {
 
         // Variable para estar conectado con MongoDB
         conn = conexion;
+        
+        getStudents();
+        deleteDataBtn.setVisible(false);
 
         // Cada vez que cambiamos de Tab actualizamos la información
         tabsPanel.addChangeListener((ChangeEvent e) -> {
             // Cargamos la informacion según la Tab en la que nos encontremos
             switch (tabsPanel.getSelectedIndex()) {
                 case 0 -> {// Alumnos
-                    // Leemos todos los alumnos que esten en la BD
-                    ArrayList<Document> alumnos = conn.getAllStudentData();
-                    
-                    // Vaciamos la lista para no repetir elementos
-                    alumnosList.removeAllItem();
-                    
-                    // Si tenemos alumnos los pintamos en pantalla
-                    if (!alumnos.isEmpty()) {
-                        for (Document alumno : alumnos) {
-                            String nombre = alumno.getString("nombre") + " " + alumno.getString("apellidos");
-                            String carrera = conn.getCareerData(alumno.getObjectId("carrera"));
-                            String estatus = conn.getStatusData(alumno.getObjectId("estatus"));
-                            alumnosList.addItem(new Alumno(nombre, carrera, estatus));
-                        }
-                    } else {// Si no, decimos que la lista esta vacia
-                    }
+                    getStudents();
+                    deleteDataBtn.setVisible(false);
                 }
                 case 1 -> {// Carreras
+                    deleteDataBtn.setVisible(true);
                     // Leemos todos los alumnos que esten en la BD
                     ArrayList<Document> carerras = conn.getAllCareerData();
-                    
+
                     // Vaciamos la lista para no repetir elementos
                     careerList.removeAllItem();
-                    
+
                     // Si tenemos alumnos los pintamos en pantalla
                     if (!carerras.isEmpty()) {
                         for (Document carrera : carerras) {
@@ -68,11 +59,12 @@ public class HomeFrame extends javax.swing.JFrame {
                     }
                 }
                 case 2 -> {// Departamentos
+                    deleteDataBtn.setVisible(true);
                     // Leemos todos los departamentos que esten en la BD
                     ArrayList<Document> depts = conn.getAllDeptData();
-                    
+
                     deptList.removeAllItem();
-                    
+
                     // Si tenemos departamentos los pintamos en pantalla
                     if (!depts.isEmpty()) {
                         for (Document dept : depts) {
@@ -82,11 +74,12 @@ public class HomeFrame extends javax.swing.JFrame {
                     }
                 }
                 case 3 -> {// Estatus
+                    deleteDataBtn.setVisible(true);
                     // Leemos todos los departamentos que esten en la BD
                     ArrayList<Document> status = conn.getAllStatusData();
-                    
+
                     estatusList.removeAllItem();
-                    
+
                     // Si tenemos departamentos los pintamos en pantalla
                     if (!status.isEmpty()) {
                         for (Document estatus : status) {
@@ -97,6 +90,27 @@ public class HomeFrame extends javax.swing.JFrame {
                 }
             }
         });
+    }
+
+    private void getStudents() {
+        // Leemos todos los alumnos que esten en la BD
+        ArrayList<Document> alumnos = conn.getAllStudentData();
+
+        // Vaciamos la lista para no repetir elementos
+        alumnosList.removeAllItem();
+
+        // Si tenemos alumnos los pintamos en pantalla
+        if (!alumnos.isEmpty()) {
+            for (Document alumno : alumnos) {
+                ObjectId id = alumno.getObjectId("_id");
+                String nombre = alumno.getString("nombre");
+                String apellidos = alumno.getString("apellidos");
+                String carrera = conn.getCareerData(alumno.getObjectId("carrera"));
+                String estatus = conn.getStatusData(alumno.getObjectId("estatus"));
+                alumnosList.addItem(new Alumno(id, nombre, apellidos, new Date(), carrera, estatus, "", "", ""));
+            }
+        } else {// Si no, decimos que la lista esta vacia
+        }
     }
 
     /**
@@ -133,6 +147,7 @@ public class HomeFrame extends javax.swing.JFrame {
         tabsPanel.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
 
         alumnosList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        alumnosList.setToolTipText("");
         jScrollPane1.setViewportView(alumnosList);
 
         javax.swing.GroupLayout alumnosPanelLayout = new javax.swing.GroupLayout(alumnosPanel);
@@ -229,6 +244,11 @@ public class HomeFrame extends javax.swing.JFrame {
 
         deleteDataBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
         deleteDataBtn.setText("Dar de baja");
+        deleteDataBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteDataBtnActionPerformed(evt);
+            }
+        });
 
         addDataBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
         addDataBtn.setText("Dar de alta");
@@ -248,11 +268,11 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(logoutBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(deleteDataBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(addDataBtn))
-                    .addComponent(tabsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
+                    .addComponent(tabsPanel))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -313,6 +333,19 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_addDataBtnActionPerformed
+
+    // Accion general de eliminar datos de MongoDB, el cual depende en cual tab se este
+    private void deleteDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDataBtnActionPerformed
+        // Declaración de los posibles casos de Tab donde pueda estar el usuario
+        switch (tabsPanel.getSelectedIndex()) {
+            case 1, 2, 3 -> {// Carreras
+                DeleteWKeyFrame frm = new DeleteWKeyFrame(conn, tabsPanel.getSelectedIndex(), this);
+                frm.pack();
+                frm.setLocationRelativeTo(null);
+                frm.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_deleteDataBtnActionPerformed
 
     /**
      * @param args the command line arguments

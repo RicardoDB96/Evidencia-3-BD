@@ -1,5 +1,7 @@
 package evidencia.pkg3.bd.CustomLists.Alumnos;
 
+import evidencia.pkg3.bd.Conexion;
+import evidencia.pkg3.bd.StudentInfoFrame;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -33,7 +35,22 @@ public class AlumnosList<E extends Object> extends JList<E> {
                 hoverIndex = -1;
                 repaint();
             }
-
+            
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    Alumno selectedItem = (Alumno) getSelectedValue();
+                    
+                    StudentInfoFrame frm;
+                    
+                    if (selectedItem != null) {
+                        frm = new StudentInfoFrame(selectedItem.id);
+                        frm.pack();
+                        frm.setLocationRelativeTo(null);
+                        frm.setVisible(true);
+                    }
+                }
+            }
         });
 
         addMouseMotionListener(new MouseMotionAdapter() {

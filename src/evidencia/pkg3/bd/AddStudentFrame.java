@@ -37,7 +37,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
             addCareerBtn.setSize(270, 25);
             careerCB.setVisible(false);
         }
-        
+
         ArrayList<Document> status = conn.getAllStatusData();
 
         if (!status.isEmpty()) {
@@ -57,12 +57,16 @@ public class AddStudentFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         cancelBtn = new javax.swing.JButton();
         addStudentBtn = new javax.swing.JButton();
         studentNameTF = new javax.swing.JTextField();
@@ -71,41 +75,57 @@ public class AddStudentFrame extends javax.swing.JFrame {
         birthDP = new com.github.lgooddatepicker.components.DatePicker();
         careerCB = new javax.swing.JComboBox<>();
         addCareerBtn = new javax.swing.JButton();
+        emailTF = new javax.swing.JTextField();
+        phoneTF = new javax.swing.JTextField();
+        addressTF = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+
+        jLabel7.setText("jLabel7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(380, 265));
-        setMinimumSize(new java.awt.Dimension(400, 325));
-        setSize(new java.awt.Dimension(380, 265));
+        setMaximumSize(new java.awt.Dimension(400, 500));
+        setMinimumSize(new java.awt.Dimension(400, 500));
+        setPreferredSize(new java.awt.Dimension(400, 500));
+        setSize(new java.awt.Dimension(400, 500));
 
-        jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Agregar estudiante");
+        jLabel1.setFont(new java.awt.Font("Space Grotesk Light", 1, 18)); // NOI18N
 
+        jLabel2.setText("Nombre*");
         jLabel2.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        jLabel2.setText("Nombre");
 
+        jLabel3.setText("Apellidos*");
         jLabel3.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        jLabel3.setText("Apellidos");
 
+        jLabel4.setText("Fec. Nac.*");
         jLabel4.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        jLabel4.setText("Fecha de nacimiento");
 
+        jLabel5.setText("Carrera*");
         jLabel5.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        jLabel5.setText("Carrera");
 
+        jLabel6.setText("Estatus*");
         jLabel6.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
-        jLabel6.setText("Estatus");
 
-        cancelBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel8.setText("Email");
+
+        jLabel9.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel9.setText("Teléfono");
+
+        jLabel10.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+        jLabel10.setText("Dirección");
+
         cancelBtn.setText("Cancelar");
+        cancelBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
 
-        addStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
         addStudentBtn.setText("Agregar");
+        addStudentBtn.setFont(new java.awt.Font("Space Grotesk Light", 1, 14)); // NOI18N
         addStudentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addStudentBtnActionPerformed(evt);
@@ -139,6 +159,15 @@ public class AddStudentFrame extends javax.swing.JFrame {
             }
         });
 
+        emailTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+
+        phoneTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+
+        addressTF.setFont(new java.awt.Font("Space Grotesk Light", 0, 14)); // NOI18N
+
+        jLabel11.setFont(new java.awt.Font("Space Grotesk Light", 1, 12)); // NOI18N
+        jLabel11.setText("*Campo obligatorio");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,13 +175,22 @@ public class AddStudentFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(cancelBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addStudentBtn)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -167,14 +205,17 @@ public class AddStudentFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(careerCB, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(addCareerBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                                .addComponent(addCareerBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(emailTF)
+                                    .addComponent(phoneTF)
+                                    .addComponent(addressTF))
                                 .addContainerGap())))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cancelBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addStudentBtn)
-                        .addContainerGap())))
+                        .addComponent(jLabel11)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +243,21 @@ public class AddStudentFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(statusCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(emailTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(phoneTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(addressTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
                     .addComponent(addStudentBtn))
@@ -227,12 +282,26 @@ public class AddStudentFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addCareerBtnActionPerformed
 
     private void addStudentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBtnActionPerformed
-        // TODO add your handling code here:
+        // Datos obligatorios
         String nombre = studentNameTF.getText();
         String apellidos = studentLNTF.getText();
         ObjectId carrera = conn.getIdCareerData(careerCB.getItemAt(careerCB.getSelectedIndex()));
-        Date fechaNacimiento = new Fechas().formatDate(birthDP.getDate().toString());
         ObjectId estatus = conn.getIdStatusData(statusCB.getItemAt(statusCB.getSelectedIndex()));
+        Date fechaNacimiento;
+        
+        // Comprobacion de que se haya ingresado una fecha valida
+        if (birthDP.getDate().toString() != null) {
+            fechaNacimiento = new Fechas().formatDate(birthDP.getDate().toString());
+        } else {
+            fechaNacimiento = null;
+        }
+        
+        System.out.println(studentNameTF.getText().isEmpty());
+        
+        // Datos optativos
+        String email = emailTF.getText();
+        String phone = phoneTF.getText();
+        String address = addressTF.getText();
 
         if (fechaNacimiento != null) {
             Document student = new Document();
@@ -241,13 +310,25 @@ public class AddStudentFrame extends javax.swing.JFrame {
             student.append("carrera", carrera);
             student.append("fechaNacimiento", fechaNacimiento);
             student.append("estatus", estatus);
+            student.append("email", email);
+            student.append("phone", phone);
+            student.append("direccion", address);
 
             if (conn.addStudentData(student, null)) {
                 this.dispose();
 
-                ArrayList<Document> careers = conn.getAllCareerData();
-                if (!careers.isEmpty() && frm != null) {
-                    frm.alumnosList.addItem(new Alumno(nombre + " " + apellidos, careerCB.getItemAt(careerCB.getSelectedIndex()), statusCB.getItemAt(statusCB.getSelectedIndex())));
+                ArrayList<Document> students = conn.getAllStudentData();
+                if (!students.isEmpty() && frm != null) {
+                    frm.alumnosList.removeAllItem();
+                    
+                    for (Document alumno : students) {
+                        ObjectId id = alumno.getObjectId("_id");
+                        nombre = alumno.getString("nombre");
+                        apellidos = alumno.getString("apellidos");
+                        String career = careerCB.getItemAt(careerCB.getSelectedIndex());
+                        String status = statusCB.getItemAt(statusCB.getSelectedIndex());
+                        frm.alumnosList.addItem(new Alumno(id, nombre, apellidos, new Date(), career, status, "", "", ""));
+                    }
                 }
             }
         }
@@ -292,15 +373,23 @@ public class AddStudentFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton addCareerBtn;
     private javax.swing.JButton addStudentBtn;
+    private javax.swing.JTextField addressTF;
     private com.github.lgooddatepicker.components.DatePicker birthDP;
     private javax.swing.JButton cancelBtn;
     public javax.swing.JComboBox<String> careerCB;
+    private javax.swing.JTextField emailTF;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField phoneTF;
     private javax.swing.JComboBox<String> statusCB;
     private javax.swing.JTextField studentLNTF;
     private javax.swing.JTextField studentNameTF;

@@ -5,7 +5,7 @@ package evidencia.pkg3.bd.CustomLists.Carreras;
  * @author Ricardo
  */
 public class Carrera {
-    
+
     String carrera, descripcion, departamento;
     
     public Carrera() {

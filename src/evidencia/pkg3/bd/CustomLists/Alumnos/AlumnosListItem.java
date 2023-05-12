@@ -16,7 +16,7 @@ public class AlumnosListItem extends javax.swing.JPanel {
     public void setItem(Object obj) {
         if (obj instanceof Alumno) {
             Alumno item = (Alumno) obj;
-            studentName.setText(item.getNombre());
+            studentName.setText(item.getNombre() + " " + item.getApellidos());
             studentCareer.setText(item.getCarrera());
             studentStatus.setText(item.getEstatus());
         } else {

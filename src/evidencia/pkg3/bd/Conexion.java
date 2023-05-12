@@ -8,10 +8,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.result.DeleteResult;
+import evidencia.pkg3.bd.CustomLists.Alumnos.Alumno;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JLabel;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 /**
@@ -53,7 +58,7 @@ public class Conexion {
         error.setVisible(true);
         return false;
     }
-    
+
     // Ingresar un documento a la colección Alumnos
     public boolean addStudentData(Document student, JLabel error) {
         // Referencia de la base de datos y de la colección
@@ -63,7 +68,7 @@ public class Conexion {
         try {
             students.insertOne(student);
             return true;// Fue exitoso el Insert
-        } catch (MongoWriteException e) { 
+        } catch (MongoWriteException e) {
             if (e.getCode() == 11000) {// Error de duplicación, en este caso no deberia de ocurrir
                 error.setVisible(true);
                 System.out.println("El alumno ya existe");
@@ -76,14 +81,82 @@ public class Conexion {
         return false;// Ocurrio un error en el Insert
     }
 
+    // Recuperar la información de un Alumno
+    public ObjectId getIdStudentData(Alumno student) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> status = client.getDatabase("Universidad").getCollection("Alumnos");
+
+        // Obtener datos del alumno de la clase
+        String nombre = student.getNombre();
+        String apellidos = student.getApellidos();
+        Date birth = student.getBirth();
+        ObjectId career = getIdCareerData(student.getCarrera());
+        ObjectId estatus = getIdStatusData(student.getEstatus());
+
+        // Documento para realizar el filtro
+        Document filtro = new Document();
+
+        // Ingresamos los datos del filtro
+        filtro.append("nombre", nombre);
+        filtro.append("apellidos", apellidos);
+        filtro.append("fechaNacimiento", birth);
+        filtro.append("carrera", career);
+        filtro.append("estatus", estatus);
+
+        ObjectId id;
+
+        // Creación del cursos para recorrer las Carrera
+        try (MongoCursor<Document> cursor = status.find(filtro).projection(Projections.include("_id", "nombre", "apellidos", "carrera", "fechaNacimiento", "estatus")).limit(1).iterator()) {
+            id = null;
+            if (cursor.hasNext()) {
+                Document documento = cursor.next();
+                id = documento.getObjectId("_id");
+                System.out.println("AlumnoID: " + id);
+            } else {
+                System.out.println("Id de alumno no encontrado");
+            }
+            cursor.close();
+        }
+        return id;
+    }
+
+    // Recuperar la información de un Alumno
+    public Document getStudentData(ObjectId id) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> status = client.getDatabase("Universidad").getCollection("Alumnos");
+
+        // Buscamos el alumno segun el id que tenemos
+        Document filtro = new Document("_id", id);
+
+        // Documento del alumno
+        Document alumno = new Document();
+
+        // Creación del cursos para recorrer las Carrera
+        try (MongoCursor<Document> cursor = status.find(filtro).projection(
+                Projections.include("_id", "nombre", "apellidos", "carrera",
+                        "fechaNacimiento", "estatus", "email", "telefono", "direccion"))
+                .limit(1).iterator()) {
+            
+            if (cursor.hasNext()) {
+                Document documento = cursor.next();
+                alumno = documento;
+                System.out.println("Alumno: " + alumno);
+            } else {
+                System.out.println("Alumno no encontrado");
+            }
+            cursor.close();
+        }
+        return alumno;
+    }
+
     // Leer la informacion de la coleccion Alumnos
     public ArrayList<Document> getAllStudentData() {
         // Referencia de la base de datos y de la coleccion Alumnos
         MongoCollection<Document> students = client.getDatabase("Universidad").getCollection("Alumnos");
-        
+
         // Guardar datos de Alumnos en una ArrayList
         ArrayList alumnos = students.find().projection(Projections.include("id", "nombre", "apellidos", "fechaNacimiento", "carrera", "estatus")).into(new ArrayList<>());
-        
+
         return alumnos;
     }
 
@@ -108,7 +181,7 @@ public class Conexion {
         }
         return false;// Ocurrio un error en el Insert
     }
-    
+
     // Recuperar el _id de una Carrera
     public ObjectId getIdCareerData(String carrera) {
         // Referencia de la base de datos y de la colección
@@ -135,7 +208,7 @@ public class Conexion {
         // Retornamos el ID correspondiente si fue exitoso
         return idCarrera;
     }
-    
+
     // Recuperar la información de la colección Carrera
     public String getCareerData(ObjectId id) {
         // Referencia de la base de datos y de la colección
@@ -146,7 +219,7 @@ public class Conexion {
 
         String carrera;
         // Creación del cursos para recorrer las Carrera
-        try (MongoCursor<Document> cursor = status.find(filtro).projection(Projections.include("_id", "carrera")).limit(1).iterator()) {
+        try (MongoCursor<Document> cursor = status.find(filtro).projection(Projections.include("_id", "carrera", "descripcion", "departamento")).limit(1).iterator()) {
 
             carrera = "";
             if (cursor.hasNext()) {
@@ -193,7 +266,7 @@ public class Conexion {
         }
         return false;
     }
-    
+
     // Recuperar la información de la colección Departamento
     public String getDeptData(ObjectId id) {
         // Referencia de la base de datos y de la colección
@@ -253,7 +326,7 @@ public class Conexion {
 
         return departamentos;
     }
-    
+
     // Ingresar un documento a la colección Estatus
     public boolean addStatusData(Document status, JLabel error) {
         // Referencia de la base de datos y de la colección
@@ -275,7 +348,7 @@ public class Conexion {
         }
         return false;
     }
-    
+
     // Recuperar el _id de un Estatus
     public ObjectId getIdStatusData(String estatus) {
         // Referencia de la base de datos y de la colección
@@ -301,7 +374,7 @@ public class Conexion {
         // Retornamos el ID correspondiente si fue exitoso
         return idStatus;
     }
-    
+
     // Recuperar la información de la colección Carrera
     public String getStatusData(ObjectId id) {
         // Referencia de la base de datos y de la colección
@@ -335,5 +408,105 @@ public class Conexion {
         ArrayList estatus = status.find().projection(Projections.include("_id", "estatus")).into(new ArrayList<>());
 
         return estatus;
-    }   
+    }
+
+    // Ingresar un documento a la colección Carrera
+    public boolean deleteStudentData(String student, JLabel error) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> carrera = client.getDatabase("Universidad").getCollection("Carrera");
+
+        // Crear el filtro para el documento a borrar
+        Bson filtro = Filters.eq("carrera", student);
+
+        try {
+            DeleteResult result = carrera.deleteOne(filtro);
+
+            if (result.getDeletedCount() == 1) {
+                System.out.println("Se borro exitosamente la carrera: " + student);
+                return true;
+            } else {
+                error.setText("No se encontro ninguna carrera con ese nombre");
+                error.setVisible(true);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;// Ocurrio un error en el Insert
+    }
+
+    // Ingresar un documento a la colección Carrera
+    public boolean deleteCareerData(String career, JLabel error) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> carrera = client.getDatabase("Universidad").getCollection("Carrera");
+
+        // Crear el filtro para el documento a borrar
+        Bson filtro = Filters.eq("carrera", career);
+
+        try {
+            DeleteResult result = carrera.deleteOne(filtro);
+
+            if (result.getDeletedCount() == 1) {
+                System.out.println("Se borro exitosamente la carrera: " + career);
+                return true;
+            } else {
+                error.setText("No se encontro ninguna carrera con ese nombre");
+                error.setVisible(true);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;// Ocurrio un error en el Insert
+    }
+
+    // Ingresar un documento a la colección Carrera
+    public boolean deleteDeptData(String dept, JLabel error) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> depts = client.getDatabase("Universidad").getCollection("Departamento");
+
+        // Crear el filtro para el documento a borrar
+        Bson filtro = Filters.eq("departamento", dept);
+
+        try {
+            DeleteResult result = depts.deleteOne(filtro);
+
+            if (result.getDeletedCount() == 1) {
+                System.out.println("Se borro exitosamente el departamento: " + dept);
+                return true;
+            } else {
+                error.setText("No se encontro ningún departamento con ese nombre");
+                error.setVisible(true);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;// Ocurrio un error en el Insert
+    }
+
+    // Ingresar un documento a la colección Carrera
+    public boolean deleteStatusData(String status, JLabel error) {
+        // Referencia de la base de datos y de la colección
+        MongoCollection<Document> estatus = client.getDatabase("Universidad").getCollection("Estatus");
+
+        // Crear el filtro para el documento a borrar
+        Bson filtro = Filters.eq("estatus", status);
+
+        try {
+            DeleteResult result = estatus.deleteOne(filtro);
+
+            if (result.getDeletedCount() == 1) {
+                System.out.println("Se borro exitosamente el estatus: " + status);
+                return true;
+            } else {
+                error.setText("No se encontro ningún estado con ese nombre");
+                error.setVisible(true);
+            }
+        } catch (MongoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;// Ocurrio un error en el Insert
+    }
 }

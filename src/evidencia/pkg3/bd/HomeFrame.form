@@ -34,12 +34,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="logoutBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="207" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="deleteDataBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="addDataBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="tabsPanel" alignment="0" pref="628" max="32767" attributes="0"/>
+                  <Component id="tabsPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -114,6 +114,7 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -305,6 +306,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Dar de baja"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteDataBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addDataBtn">
       <Properties>
