@@ -1,6 +1,6 @@
 # Evidencia 3 BD
 Proyecto de Base de Datos - Gestión de universidad
-## Descriçión
+## Descrición
 Este proyecto es parte de la materia de Base de Datos y consiste en una aplicación en Java cutilizando la biblioteca gráfica Swing. La aplicación se conecta a una base de datos MongoDB para gestionar información relacionada con una universidad. La primera pantalla de despliegue es el inicio de sesión utilizando la seguridad de la base de datos. La aplicación permite realizar consultas de información de alumnos y carreras, así como también realizar altas, bajas y modificaciones de alumnos y carreras.
 ## Características principales
 - Inicio de sesión utilizando la seguridad de base de datos.
