@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "645e75365464bf458778fc6f"
+  },
+  "nombre": "Pepito",
+  "apellidos": "Perez de León",
+  "carrera": {
+    "$oid": "645e74f75464bf458778fc6e"
+  },
+  "fechaNacimiento": "2023-05-24",
+  "estatus": {
+    "$oid": "645d400021851e7e87e50303"
+  },
+  "email": "Pepito23@outlook.com",
+  "telefono": "90829739",
+  "direccion": "Calle la abuelita"
+},{
+  "_id": {
+    "$oid": "645e75e35464bf458778fc72"
+  },
+  "nombre": "Paquito",
+  "apellidos": "Gomecito Rubiocito",
+  "carrera": {
+    "$oid": "645e757c5464bf458778fc71"
+  },
+  "fechaNacimiento": "1973-05-13",
+  "estatus": {
+    "$oid": "645d400021851e7e87e50303"
+  },
+  "email": "Paco@.outlook.com",
+  "direccion": "",
+  "telefono": "12"
+}]

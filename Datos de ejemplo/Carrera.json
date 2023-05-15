@@ -1,0 +1,28 @@
+[{
+  "_id": {
+    "$oid": "645e74f75464bf458778fc6e"
+  },
+  "carrera": "IDS",
+  "descripcion": "Ingeneria en desarollo de software",
+  "departamento": {
+    "$oid": "645e74df5464bf458778fc6d"
+  }
+},{
+  "_id": {
+    "$oid": "645e757c5464bf458778fc71"
+  },
+  "carrera": "LM",
+  "descripcion": "Licenciatura en mercadoctenia",
+  "departamento": {
+    "$oid": "645e75665464bf458778fc70"
+  }
+},{
+  "_id": {
+    "$oid": "646270d0656b337f5cb4d8d0"
+  },
+  "carrera": "Gastronimía",
+  "descripcion": "Queso",
+  "departamento": {
+    "$oid": "646270cd656b337f5cb4d8cf"
+  }
+}]

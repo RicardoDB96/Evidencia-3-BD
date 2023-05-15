@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "645e74df5464bf458778fc6d"
+  },
+  "departamento": "Ingeneria"
+},{
+  "_id": {
+    "$oid": "645e75665464bf458778fc70"
+  },
+  "departamento": "Negocios"
+},{
+  "_id": {
+    "$oid": "646270cd656b337f5cb4d8cf"
+  },
+  "departamento": "Salud"
+}]
